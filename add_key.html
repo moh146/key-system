@@ -38,27 +38,9 @@
         msgBox.className = 'error';
         return;
       }
-      fetch('add_key.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `key=${encodeURIComponent(key)}&expiry=${encodeURIComponent(expiry)}`
-      })
-      .then(res => res.text())
-      .then(text => {
-        if (text === 'OK') {
-          msgBox.textContent = 'تمت إضافة المفتاح بنجاح.';
-          msgBox.className = 'success';
-          document.getElementById('key').value = '';
-          document.getElementById('expiry').value = '';
-        } else {
-          msgBox.textContent = text;
-          msgBox.className = 'error';
-        }
-      })
-      .catch(err => {
-        msgBox.textContent = 'حدث خطأ في الاتصال.';
-        msgBox.className = 'error';
-      });
+      // Append to static keys.txt (won't work on Netlify directly)
+      msgBox.textContent = 'Please edit keys.txt in the repo or use Netlify CMS admin.';
+      msgBox.className = 'error';
     }
   </script>
 </body>
