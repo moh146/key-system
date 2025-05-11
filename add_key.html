@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin: Add New Key</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f0f0; display: flex; justify-content: center; padding-top: 50px; }
+    .container { background: #fff; padding: 20px; border-radius: 6px; width: 320px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    label { display: block; margin-top: 10px; }
+    input, button { width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px; }
+    button { background: #28a745; color: #fff; border: none; cursor: pointer; margin-top: 15px; }
+    button:hover { background: #218838; }
+    #msg { margin-top: 10px; font-size: 14px; }
+    #msg.success { color: #28a745; }
+    #msg.error   { color: #d9534f; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>إضافة مفتاح جديد</h2>
+    <label for="key">Key:</label>
+    <input type="text" id="key" placeholder="مثال: NEWKEY123"/>
+    <label for="expiry">Expiry Date:</label>
+    <input type="date" id="expiry"/>
+    <button onclick="addKey()">Add Key</button>
+    <div id="msg"></div>
+  </div>
+  <script>
+    function addKey() {
+      const key    = document.getElementById('key').value.trim();
+      const expiry = document.getElementById('expiry').value;
+      const msgBox = document.getElementById('msg');
+      msgBox.textContent = '';
+      msgBox.className = '';
+      if (!key || !expiry) {
+        msgBox.textContent = 'الرجاء ملء الحقلين.';
+        msgBox.className = 'error';
+        return;
+      }
+      fetch('add_key.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `key=${encodeURIComponent(key)}&expiry=${encodeURIComponent(expiry)}`
+      })
+      .then(res => res.text())
+      .then(text => {
+        if (text === 'OK') {
+          msgBox.textContent = 'تمت إضافة المفتاح بنجاح.';
+          msgBox.className = 'success';
+          document.getElementById('key').value = '';
+          document.getElementById('expiry').value = '';
+        } else {
+          msgBox.textContent = text;
+          msgBox.className = 'error';
+        }
+      })
+      .catch(err => {
+        msgBox.textContent = 'حدث خطأ في الاتصال.';
+        msgBox.className = 'error';
+      });
+    }
+  </script>
+</body>
+</html>
