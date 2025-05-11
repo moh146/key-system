@@ -22,11 +22,11 @@
     }
     .success {
       color: #00ff88;
-      font-size: 24px;
+      font-size: 20px;
     }
     .error {
       color: #ff4444;
-      font-size: 24px;
+      font-size: 20px;
     }
   </style>
 </head>
@@ -43,14 +43,24 @@
   const resultBox = document.getElementById('result');
 
   if (!key || !KEYS[key]) {
-    resultBox.innerHTML = '<div class="error">❌ Invalid or missing key.</div>';
+    resultBox.innerHTML = `<div class="error">❌ Invalid or missing key: <b>${key || "none"}</b></div>`;
   } else {
     const today = new Date();
     const expiry = new Date(KEYS[key]);
     if (expiry >= today) {
-      resultBox.innerHTML = '<div class="success">✅ Key is valid and active!</div>';
+      resultBox.innerHTML = `
+        <div class="success">
+          ✅ Key is valid!<br>
+          🔑 <b>${key}</b><br>
+          📅 Expires on: <b>${KEYS[key]}</b>
+        </div>`;
     } else {
-      resultBox.innerHTML = '<div class="error">⚠️ Key expired!</div>';
+      resultBox.innerHTML = `
+        <div class="error">
+          ⚠️ Key expired!<br>
+          🔑 <b>${key}</b><br>
+          📅 Expired on: <b>${KEYS[key]}</b>
+        </div>`;
     }
   }
 </script>
