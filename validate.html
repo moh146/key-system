@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Key Validator</title>
+  <style>
+    body {
+      background: #0f1116;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .box {
+      background: #1a1c22;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,0,0.2);
+    }
+    .success {
+      color: #00ff88;
+      font-size: 24px;
+    }
+    .error {
+      color: #ff4444;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+<div class="box" id="result">Validating...</div>
+<script>
+  const KEYS = {
+    "DEMO123": "2025-06-10",
+    "TEST999": "2025-07-01"
+  };
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const key = urlParams.get('key');
+  const resultBox = document.getElementById('result');
+
+  if (!key || !KEYS[key]) {
+    resultBox.innerHTML = '<div class="error">❌ Invalid or missing key.</div>';
+  } else {
+    const today = new Date();
+    const expiry = new Date(KEYS[key]);
+    if (expiry >= today) {
+      resultBox.innerHTML = '<div class="success">✅ Key is valid and active!</div>';
+    } else {
+      resultBox.innerHTML = '<div class="error">⚠️ Key expired!</div>';
+    }
+  }
+</script>
+</body>
+</html>
